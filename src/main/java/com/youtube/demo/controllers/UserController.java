@@ -1,6 +1,7 @@
 package com.youtube.demo.controllers;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.youtube.demo.model.User;
 import com.youtube.demo.service.UserService;
 import com.youtube.demo.util.RestResponse;
@@ -36,8 +36,13 @@ public class UserController {
 			return new RestResponse(HttpStatus.NOT_ACCEPTABLE.value(),"Los campos obligatorios no están diligenciados");
 		}
 		
-		this.userService.save(user);
+		this.userService.saveUser(user);
 		return new RestResponse(HttpStatus.OK.value(),"Operación exitosa");
+	}
+	
+	@RequestMapping(value = "/getUsers", method = RequestMethod.GET)
+	public List<User> getUsers() {
+		return userService.getUsers();
 	}
 	
 	private boolean validate (User user) {
